@@ -1,5 +1,8 @@
 {>"_layout" /}
 
 {<body}
-    TEST INDEX VIEW
+    {#recipes}
+        {id}
+        {name}
+    {/recipes}
 {/body}
