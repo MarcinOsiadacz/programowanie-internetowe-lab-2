@@ -2,8 +2,16 @@
 <html>
 <head>
     <title>Recipebook</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     {+body /}
+    <script 
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" 
+        crossorigin="anonymous">
+    </script>
+    <script src="/js/bootstrap.js"></script>
 </body>
 </html>

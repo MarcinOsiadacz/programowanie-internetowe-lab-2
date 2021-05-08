@@ -15,6 +15,7 @@
     "dustjs-helpers": "*",
     "dustjs-linkedin": "*",
     "express": "*",
+    "express-session": "*",
     "pg": "*"
   }
 }
