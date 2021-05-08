@@ -7,16 +7,18 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cons = require('consolidate'),
     dust = require('dustjs-helpers'),
-    pg = require('pg'),
     app = express();
 
+const { Client } = require('pg');
+
 // Db config
-const dbClient = new pg.Client({
+const dbClient = new Client({
     host: 'localhost',
     database: 'recipebook_db',
     user: 'recipebook_user',
     password: 'Passw0rd!'
 });
+dbClient.connect();
 
 // Views config
 app.engine('dust', cons.dust);
@@ -31,11 +33,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', function(request, response){
-    dbClient.connect(err => {
-        if(err) {
-            return console.error('Connection error has occured', err);
-        }
-    });
     dbClient.query('SELECT * FROM public.recipes', (err, result) => {
         if(err) {
             return console.error('Error has occured when running a query', err);

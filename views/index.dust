@@ -2,7 +2,32 @@
 
 {<body}
     {#recipes}
-        {id}
-        {name}
+    <div class="well">
+        <span class="label label-default">{type}</span>
+        <h4>{name} 
+            <button class="btn btn-default pull-right" data-toggle="collapse" 
+                    href="#recipe_{id}" aria-expanded="false" aria-controls="recipe_{id}">
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+            </button>
+        </h4>
+        <br />
+        <div class="collapse" id="recipe_{id}">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>By: {createdBy}</p> 
+                </div>
+                <div class="col-md-6 text-right">
+                    <p><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {preparationTime} minutes</p>   
+                    <p>Difficulty: {difficulty}/10</p> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Ingredients: </strong>{ingredients}</p>
+                    <p><strong>Description: </strong>{description}</p>
+                </div>
+            </div>
+        </div>
+    </div>      
     {/recipes}
 {/body}
