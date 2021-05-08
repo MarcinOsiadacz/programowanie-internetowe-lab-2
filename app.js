@@ -46,7 +46,19 @@ app.get('/', function(request, response){
 });
 
 app.post('/add', function(request, response) {
-
+    pool.connect(function(err, client, done) {
+        if(err) {
+            return console.error('Connection error has occured', err);
+        }
+        client.query('INSERT INTO public.recipes(' + 
+            'name, type, "preparationTime", difficulty, ingredients, description, "photoUrl", "createdBy")' + 
+            'VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [
+                request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, request.body.ingredients, 
+                request.body.description, 'https://www.glamour.pl/media/cache/default_view/uploads/media/quiz/0004/97/quiz-ktora-atomowka-jestes.jpeg', 'test.user'
+            ]);
+            done();
+            response.redirect('/')
+    })
 });
 
 // Server config
