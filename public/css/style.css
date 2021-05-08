@@ -2,3 +2,8 @@ body {
     margin-top: 10px;
     background: #f9f9f9;
 }
+
+.img-thumbnail {
+    height: 150px;
+    width: 150px;
+}

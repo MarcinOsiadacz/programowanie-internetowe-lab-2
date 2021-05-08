@@ -9,16 +9,14 @@ var express = require('express'),
     dust = require('dustjs-helpers'),
     app = express();
 
-const { Client } = require('pg');
-
-// Db config
-const dbClient = new Client({
-    host: 'localhost',
-    database: 'recipebook_db',
-    user: 'recipebook_user',
-    password: 'Passw0rd!'
-});
-dbClient.connect();
+// Db Config
+const pg = require('pg');
+const pool = new pg.Pool({
+        host: 'localhost',
+        database: 'recipebook_db',
+        user: 'recipebook_user',
+        password: 'Passw0rd!'
+    });
 
 // Views config
 app.engine('dust', cons.dust);
@@ -30,16 +28,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // BodyParser Middleware config
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function(request, response){
-    dbClient.query('SELECT * FROM public.recipes', (err, result) => {
+    pool.connect(function(err, client, done) {
+        if(err) {
+            return console.error('Connection error has occured', err);
+        }
+        client.query('SELECT * FROM public.recipes', function(err, result) {
         if(err) {
             return console.error('Error has occured when running a query', err);
         }
         response.render('index', {recipes: result.rows});
-        dbClient.end();
-    });
+        done();
+        });
+    })
+});
+
+app.post('/add', function(request, response) {
+
 });
 
 // Server config
