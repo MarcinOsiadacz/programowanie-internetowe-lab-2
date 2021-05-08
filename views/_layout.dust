@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    {+body /}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-md-offset-2">
+                {+body /}
+            </div>
+        </div>
+    </div>
     <script 
         src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" 
