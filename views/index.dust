@@ -29,6 +29,7 @@
             <br />
                 <p><strong>Ingredients: </strong>{ingredients}</p>
                 <p><strong>Description: </strong>{description}</p>
+                {?isModerator}
                 <button class="btn btn-default edit-recipe" data-toggle="modal" data-target="#editFormModal"
                     data-id="{id}" data-name="{name}" data-type="{type}" data-preparation-time="{preparationTime}" data-difficulty="{difficulty}"
                     data-ingredients="{ingredients}", data-description="{description}" data-photo-url="{photoUrl}" >
@@ -37,6 +38,7 @@
                 <button class="btn btn-danger delete-recipe" data-id="{id}">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 </button>
+                {/isModerator}
         </div>
     </div>      
     {/recipes}

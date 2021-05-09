@@ -39,9 +39,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/login', function(request, response) {
 	var username = request.body.username;
-    console.log(username);
 	var password = request.body.password;
-    console.log(password);
 	if (username && password) {
         pool.connect(function(err, client, done)  {
             if(err) {
@@ -51,7 +49,8 @@ app.post('/login', function(request, response) {
                 if (result.rowCount > 0) {
                     request.session.loggedin = true;
                     request.session.username = username;
-                    console.log('Welcome back, ' + request.session.username + '!');
+                    request.session.isModerator = result.rows[0].isModerator;
+                    console.log('Is Moderator ? ' + request.session.isModerator);
                     response.redirect('/');
                 } else {
                     // Change not to return a response
@@ -90,7 +89,7 @@ app.get('/', function(request, response){
         if(err) {
             return console.error('Error has occured when running a query', err);
         }
-        response.render('index', {recipes: result.rows, user: request.session.loggedin});
+        response.render('index', {recipes: result.rows, user: request.session.loggedin, isModerator: request.session.isModerator});
         done();
         });
     })
