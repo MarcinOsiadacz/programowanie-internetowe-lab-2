@@ -26,11 +26,62 @@ app.set('views', __dirname + '/views');
 // Define Public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Session config
+app.use(expressSession({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+
 // BodyParser Middleware config
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.post('/login', function(request, response) {
+	var username = request.body.username;
+    console.log(username);
+	var password = request.body.password;
+    console.log(password);
+	if (username && password) {
+        pool.connect(function(err, client, done)  {
+            if(err) {
+                return console.error('Connection error has occured', err);
+            }
+            client.query('SELECT * FROM public.users WHERE username = $1 AND password = $2', [username, password], function(error, result) {
+                if (result.rowCount > 0) {
+                    request.session.loggedin = true;
+                    request.session.username = username;
+                    console.log('Welcome back, ' + request.session.username + '!');
+                    response.redirect('/');
+                } else {
+                    // Change not to return a response
+                    response.send('Incorrect Username and/or Password!');
+                }			
+                done();
+            }); 
+        }); 
+    } else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
+});
+
+app.post('/logout', function(request, response) {
+    if (request.session.loggedin) {
+        request.session.loggedin = false;
+        request.session.username = null;
+        console.log('User has been logged out!');
+        response.redirect('/');
+    } else {
+        console.error('User has been already logged out!')
+    }
+    response.end();
+});
+
 app.get('/', function(request, response){
+    if (request.session.loggedin) {
+        console.log("'Welcome back, ' + request.session.username + '!'")
+    }
     pool.connect(function(err, client, done) {
         if(err) {
             return console.error('Connection error has occured', err);
@@ -39,7 +90,7 @@ app.get('/', function(request, response){
         if(err) {
             return console.error('Error has occured when running a query', err);
         }
-        response.render('index', {recipes: result.rows});
+        response.render('index', {recipes: result.rows, user: request.session.loggedin});
         done();
         });
     })
@@ -78,8 +129,8 @@ app.post('/edit', function(request, response) {
             return console.error('Connection error has occured', err);
         }
         client.query('UPDATE public.recipes SET ' + 
-            'name = $1, type = $2, "preparationTime" = $3, difficulty = $4, ingredients = $5, description = $6, "photoUrl" = $7 WHERE id = $8', [
-                request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, 
+            'name = $1, type = $2, "preparationTime" = $3, difficulty = $4, ingredients = $5, description = $6, "photoUrl" = $7' + 
+            'WHERE id = $8', [request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, 
                 request.body.ingredients, request.body.description, request.body.photoUrl, request.body.id
             ]);
             done();

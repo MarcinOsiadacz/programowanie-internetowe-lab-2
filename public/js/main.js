@@ -27,4 +27,20 @@ $(document).ready(function() {
         $('#edit-photoUrl').val($(this).data('photo-url'));
         $('#edit-id').val($(this).data('id'));
     });
+    // On Click event for logout
+    $('.logout-button').on('click', function() {
+        var url = '/logout'
+        if(confirm('Are you sure you want to logout?')) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function(result) {
+                    window.location.href='/';
+                },
+                error: function(err) {
+                    console.error(err);
+                }
+            });
+        }
+    });
 });

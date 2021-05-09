@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Recipebook App</a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            {?user}
+            <li><a class="logout-button"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+            {:else}
+            <li><a><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a data-toggle="modal" data-target="#loginFormModal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            {/user}
+        </ul>     
+        </div>
+      </nav> 
     <div class="container">
         <div class="row">
             <div class="col-md-7 col-md-offset-2">
@@ -13,6 +28,33 @@
             </div>
         </div>
     </div>
+        <!-- Login Modal Form -->
+        <div class="modal fade" id="loginFormModal" tabindex="-1" role="dialog" aria-labelledby="loginFormModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form method="post" action="/login">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="loginFormModalLabel">Login</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username" id="username"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="password" id="password"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Login" />
+                    </div>
+                </form>
+            </div>
+            </div>
+          </div>
     <script src="/js/jquery-2.2.4.min.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/main.js"></script>
