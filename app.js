@@ -61,6 +61,17 @@ app.post('/add', function(request, response) {
     })
 });
 
+app.delete('/delete/:id', function(request, response) {
+    pool.connect(function(err, client, done) {
+        if(err) {
+            return console.error('Connection error has occured', err);
+        }
+        client.query('DELETE FROM public.recipes WHERE id = $1', [request.params.id]);
+            done();
+            response.sendStatus(200)
+    })
+});
+
 // Server config
 app.listen(3000, function(){
     console.log('App running on port 3000');
