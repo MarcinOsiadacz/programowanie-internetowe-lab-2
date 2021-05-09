@@ -27,7 +27,9 @@
             <br />
                 <p><strong>Ingredients: </strong>{ingredients}</p>
                 <p><strong>Description: </strong>{description}</p>
-                <button class="btn btn-default edit-recipe">
+                <button class="btn btn-default edit-recipe" data-toggle="modal" data-target="#editFormModal"
+                    data-id="{id}" data-name="{name}" data-type="{type}" data-preparation-time="{preparationTime}" data-difficulty="{difficulty}"
+                    data-ingredients="{ingredients}", data-description="{description}" data-photo-url="{photoUrl}" >
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 </button>
                 <button class="btn btn-danger delete-recipe" data-id="{id}">
@@ -80,6 +82,63 @@
                     <div class="form-group">
                         <label>Photo</label>
                         <input type="text" class="form-control" name="photoUrl"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="Save" />
+                </div>
+            </form>
+        </div>
+        </div>
+      </div>
+
+    <!-- Edit Recipe Modal Form -->
+    <div class="modal fade" id="editFormModal" tabindex="-1" role="dialog" aria-labelledby="editFormModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form method="post" action="/edit">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editFormModalLabel">Edit Recipe</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="id" id="edit-id"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="name" id="edit-name"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" class="form-control" name="type" id="edit-type"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Preparation Time (minutes)</label>
+                        <input type="text" class="form-control" name="preparationTime" id="edit-preparationTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Difficulty</label>
+                        <select type="number" class="form-control" name="difficulty" id="edit-difficulty">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ingredients</label>
+                        <textarea class="form-control" name="ingredients" id="edit-ingredients"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" name="description" id="edit-description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo</label>
+                        <input type="text" class="form-control" name="photoUrl" id="edit-photoUrl"/>
                     </div>
                 </div>
                 <div class="modal-footer">

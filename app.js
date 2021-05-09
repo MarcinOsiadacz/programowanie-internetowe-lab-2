@@ -72,6 +72,21 @@ app.delete('/delete/:id', function(request, response) {
     })
 });
 
+app.post('/edit', function(request, response) {
+    pool.connect(function(err, client, done) {
+        if(err) {
+            return console.error('Connection error has occured', err);
+        }
+        client.query('UPDATE public.recipes SET ' + 
+            'name = $1, type = $2, "preparationTime" = $3, difficulty = $4, ingredients = $5, description = $6, "photoUrl" = $7 WHERE id = $8', [
+                request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, 
+                request.body.ingredients, request.body.description, request.body.photoUrl, request.body.id
+            ]);
+            done();
+            response.redirect('/');
+    });
+});
+
 // Server config
 app.listen(3000, function(){
     console.log('App running on port 3000');
