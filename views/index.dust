@@ -1,9 +1,41 @@
 {>"_layout" /}
 
 {<body}
-    {?user}
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#formModal">Add Recipe</button>
-    {/user}
+    <div>
+        <form class="form-inline">
+            <div class="form-group">
+              <label for="type-filter">Type</label>
+              <select type="text" class="form-control" name="type" id="type-filter">
+                  <option>Any</option>
+                  {#types}<option>{.}</option>{/types}
+            </select>
+            </div>
+            <div class="form-group">
+                <label for="difficulty-filter">Difficulty</label>
+                <select type="text" class="form-control" name="difficulty" id="difficulty-filter">
+                    <option>Any</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <!--{#difficulties}<option>{.}</option>{/difficulties} -->
+              </select>
+            </div>
+            <div class="form-group">
+                <label for="difficulty-filter">Author</label>
+                <select type="text" class="form-control" name="createdBy" id="author-filter">
+                    <option>Any</option>
+                    {#authors}<option>{.}</option>{/authors}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Apply filters</button>
+          </form>
+          {?user}
+          <br />
+          <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#formModal">Add Recipe</button>
+          {/user}
+    </div>
     <br />
     {#recipes}
     <div class="well">

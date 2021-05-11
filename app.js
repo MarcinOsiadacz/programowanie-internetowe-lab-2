@@ -11,6 +11,7 @@ var express = require('express'),
 
 // Db Config
 const pg = require('pg');
+const { Console } = require('console');
 const pool = new pg.Pool({
         host: 'localhost',
         database: 'recipebook_db',
@@ -79,6 +80,9 @@ app.post('/logout', function(request, response) {
 });
 
 app.get('/', function(request, response){
+    var filters = request.query; // Take parameters from query and removing default ones
+    for (var key in filters) if (filters[key] === 'Any') delete filters[key];
+
     if (request.session.loggedin) {
         console.log('Welcome back, ' + request.session.username + '!')
     }
@@ -86,11 +90,27 @@ app.get('/', function(request, response){
         if(err) {
             return console.error('Connection error has occured', err);
         }
+        // query for recipes
         client.query('SELECT * FROM public.recipes', function(err, result) {
         if(err) {
             return console.error('Error has occured when running a query', err);
         }
-        response.render('index', {recipes: result.rows, user: request.session.loggedin, isModerator: request.session.isModerator});
+        // defining values for filters without duplicated values
+        const types = [...new Set(result.rows.map(singleRow => { return singleRow['type'] }))];
+        //const difficulties = [...new Set(result.rows.map(singleRow => { return singleRow['difficulty'] }))];
+        const authors = [...new Set(result.rows.map(singleRow => { return singleRow['createdBy'] }))];
+        // Filter db query results
+        const filteredResults = result.rows.filter(recipe => { 
+            let isValid = true;
+            for (key in filters) {
+                isValid = isValid && recipe[key] == filters[key];
+            }
+            return isValid;
+        });
+        response.render('index', {
+            recipes: filteredResults, user: request.session.loggedin, isModerator: request.session.isModerator,
+            types: types, authors: authors
+        });
         done();
         });
     })
@@ -137,6 +157,10 @@ app.post('/edit', function(request, response) {
             response.redirect('/');
     });
 });
+
+function isEmpty(str) {
+    return (!str || str.length === 0);
+}
 
 // Server config
 app.listen(3000, function(){
