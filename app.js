@@ -50,24 +50,25 @@ app.post('/login', function(request, response) {
                     request.session.loggedin = true;
                     request.session.username = username;
                     request.session.isModerator = result.rows[0].isModerator;
-                    console.log('Is Moderator ? ' + request.session.isModerator);
+                    // console.log('Is Moderator ? ' + request.session.isModerator);
                     response.redirect('/');
                 } else {
-                    // Change not to return a response
-                    response.send('Incorrect Username and/or Password!');
+                    console.log('Incorrect Username and/or Password!');
+                    response.redirect('/');
                 }			
                 done();
             }); 
         }); 
     } else {
-		response.send('Please enter Username and Password!');
-		response.end();
+		console.log('Please enter Username and Password!');
+		response.redirect('/');
 	}
 });
 
 app.post('/logout', function(request, response) {
     if (request.session.loggedin) {
         request.session.loggedin = false;
+        request.session.isModerator = false;
         request.session.username = null;
         console.log('User has been logged out!');
         response.redirect('/');
@@ -79,7 +80,7 @@ app.post('/logout', function(request, response) {
 
 app.get('/', function(request, response){
     if (request.session.loggedin) {
-        console.log("'Welcome back, ' + request.session.username + '!'")
+        console.log('Welcome back, ' + request.session.username + '!')
     }
     pool.connect(function(err, client, done) {
         if(err) {
@@ -104,7 +105,7 @@ app.post('/add', function(request, response) {
             'name, type, "preparationTime", difficulty, ingredients, description, "photoUrl", "createdBy")' + 
             'VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [
                 request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, request.body.ingredients, 
-                request.body.description, 'https://www.glamour.pl/media/cache/default_view/uploads/media/quiz/0004/97/quiz-ktora-atomowka-jestes.jpeg', 'test.user'
+                request.body.description, 'https://www.glamour.pl/media/cache/default_view/uploads/media/quiz/0004/97/quiz-ktora-atomowka-jestes.jpeg', request.session.username
             ]);
             done();
             response.redirect('/')
