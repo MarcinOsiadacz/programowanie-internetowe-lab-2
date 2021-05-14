@@ -36,7 +36,7 @@ app.use(expressSession({
 	saveUninitialized: true
 }));
 
-// enable files upload
+// Enable files upload
 app.use(fileUpload({
     createParentPath: true
 }));
@@ -45,6 +45,33 @@ app.use(fileUpload({
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/register', function(request, response) {
+	var username = request.body.username;
+	var password = request.body.password;
+	if (username && password) {
+        pool.connect(function(err, client, done)  {
+            if(err) {
+                return console.error('Connection error has occured', err);
+            }
+            client.query('SELECT * FROM public.users WHERE username = $1', [username], function(error, result) {        
+                if (result.rowCount > 0) {
+                    console.log('User already exists!');
+                    response.redirect('/');
+                } else {
+                    client.query('INSERT INTO public.users(username, password, "isModerator") ' +
+                        'VALUES ($1, $2, false);', [username, password]);
+                        console.log('Account created!');
+                    response.redirect('/');
+                }			
+                done();
+            }); 
+        }); 
+    } else {
+		console.log('Please enter Username and Password!');
+		response.redirect('/');
+	}
+});
 
 app.post('/login', function(request, response) {
 	var username = request.body.username;
