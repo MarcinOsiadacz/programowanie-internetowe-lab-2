@@ -131,7 +131,7 @@ app.post('/add', function(request, response) {
             return console.error('Connection error has occured', err);
         }
         // Default photo is assigned if there is no files send in request
-        var photoUrlToBeAssigned = 'https://www.dropbox.com/s/bri7t19h9k5zniu/default.jpg?dl=1';
+        var photoUrlToBeAssigned = '/media/default.jpg';
 
         if (!request.files) {
             console.log(photoUrlToBeAssigned);
