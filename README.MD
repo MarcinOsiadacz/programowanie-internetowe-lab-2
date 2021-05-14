@@ -5,6 +5,7 @@
 > - Źródło danych pozwalające przechowywać informacje na temat przepisów oraz autorów(rodzaj potrawy, trudność wykonania, składniki, czas wykonania, opis wykonania, zdjęcie, autor, itp.)
 > - widoki niezbędne do prezentacji odpowiednich danych
 > - logikę  dla budowanego systemu
+>
 > Uwaga:
 > - przepis może dodać tylko osoba zarejestrowana w systemie
 > - przepisy mogą przeglądać dowolne osoby korzystające z tego systemu
@@ -20,4 +21,12 @@
 ![AppScreenshot](./app_screenshots/Login.jpg)
 
 ### Przeglądanie przepisów i filtrowanie
-![AppScreenshot](./README_screenshots/Filter.jpg)
+![AppScreenshot](./app_screenshots/Filter.jpg)
+
+### Dodawanie przepisu dostępne z poziomu zalogowanego użytkownika
+![AppScreenshot](./app_screenshots/Add.jpg)
+
+### Edytowanie oraz usuwanie przepisów dostępne z poziomu moderatora
+![AppScreenshot](./app_screenshots/Edit.jpg)
+
+![AppScreenshot](./app_screenshots/Delete.jpg)
