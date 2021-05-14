@@ -11,10 +11,12 @@
   "dependencies": {
     "body-parser": "*",
     "consolidate": "*",
+    "cors": "^2.8.5",
     "dust": "*",
     "dustjs-helpers": "*",
     "dustjs-linkedin": "*",
     "express": "*",
+    "express-fileupload": "^1.2.1",
     "express-session": "*",
     "pg": "*"
   }

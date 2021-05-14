@@ -3,6 +3,8 @@ const { execPath } = require('process');
 // Import packages
 var express = require('express'),
     expressSession = require('express-session'),
+    fileUpload = require('express-fileupload'),
+    cors = require('cors'),
     path = require('path'),
     bodyParser = require('body-parser'),
     cons = require('consolidate'),
@@ -11,7 +13,7 @@ var express = require('express'),
 
 // Db Config
 const pg = require('pg');
-const { Console } = require('console');
+const { time } = require('console');
 const pool = new pg.Pool({
         host: 'localhost',
         database: 'recipebook_db',
@@ -26,6 +28,7 @@ app.set('views', __dirname + '/views');
 
 // Define Public directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/media/', express.static(path.join(__dirname, 'media')));
 
 // Session config
 app.use(expressSession({
@@ -34,7 +37,13 @@ app.use(expressSession({
 	saveUninitialized: true
 }));
 
+// enable files upload
+app.use(fileUpload({
+    createParentPath: true
+}));
+
 // BodyParser Middleware config
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -121,11 +130,24 @@ app.post('/add', function(request, response) {
         if(err) {
             return console.error('Connection error has occured', err);
         }
+        // Default photo is assigned if there is no files send in request
+        var photoUrlToBeAssigned = 'https://www.dropbox.com/s/bri7t19h9k5zniu/default.jpg?dl=1';
+
+        if (!request.files) {
+            console.log(photoUrlToBeAssigned);
+        }
+        else { 
+            let file = request.files.photoUrl;
+            let timestamp = Date.now();
+            photoUrlToBeAssigned = '/media/' + timestamp + '_' + file.name;
+            file.mv(path.join(__dirname, 'media/') + timestamp + '_' + file.name);
+        }
+
         client.query('INSERT INTO public.recipes(' + 
             'name, type, "preparationTime", difficulty, ingredients, description, "photoUrl", "createdBy")' + 
             'VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [
                 request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, request.body.ingredients, 
-                request.body.description, 'https://www.glamour.pl/media/cache/default_view/uploads/media/quiz/0004/97/quiz-ktora-atomowka-jestes.jpeg', request.session.username
+                request.body.description, photoUrlToBeAssigned, request.session.username
             ]);
             done();
             response.redirect('/')
@@ -148,19 +170,16 @@ app.post('/edit', function(request, response) {
         if(err) {
             return console.error('Connection error has occured', err);
         }
+
         client.query('UPDATE public.recipes SET ' + 
-            'name = $1, type = $2, "preparationTime" = $3, difficulty = $4, ingredients = $5, description = $6, "photoUrl" = $7' + 
-            'WHERE id = $8', [request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, 
-                request.body.ingredients, request.body.description, request.body.photoUrl, request.body.id
+            'name = $1, type = $2, "preparationTime" = $3, difficulty = $4, ingredients = $5, description = $6' + 
+            'WHERE id = $7', [request.body.name, request.body.type, request.body.preparationTime, request.body.difficulty, 
+                request.body.ingredients, request.body.description, request.body.id
             ]);
             done();
             response.redirect('/');
     });
 });
-
-function isEmpty(str) {
-    return (!str || str.length === 0);
-}
 
 // Server config
 app.listen(3000, function(){

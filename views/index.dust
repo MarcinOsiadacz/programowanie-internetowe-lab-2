@@ -1,18 +1,18 @@
 {>"_layout" /}
 
 {<body}
-    <div>
+    <div class="well">
         <form class="form-inline">
-            <div class="form-group">
+            <div class="form-group" style="margin: 5px;">
               <label for="type-filter">Type</label>
-              <select type="text" class="form-control" name="type" id="type-filter">
+              <select type="text" class="form-control" name="type" id="type-filter" style="margin: 5px;">
                   <option>Any</option>
                   {#types}<option>{.}</option>{/types}
             </select>
             </div>
             <div class="form-group">
                 <label for="difficulty-filter">Difficulty</label>
-                <select type="text" class="form-control" name="difficulty" id="difficulty-filter">
+                <select type="text" class="form-control" name="difficulty" id="difficulty-filter" style="margin: 5px;">
                     <option>Any</option>
                     <option>1</option>
                     <option>2</option>
@@ -24,12 +24,12 @@
             </div>
             <div class="form-group">
                 <label for="difficulty-filter">Author</label>
-                <select type="text" class="form-control" name="createdBy" id="author-filter">
+                <select type="text" class="form-control" name="createdBy" id="author-filter" style="margin: 5px;">
                     <option>Any</option>
                     {#authors}<option>{.}</option>{/authors}
               </select>
             </div>
-            <button type="submit" class="btn btn-primary">Apply filters</button>
+            <button type="submit" class="btn btn-primary" style="margin: 5px;">Apply filters</button>
           </form>
           {?user}
           <br />
@@ -79,7 +79,7 @@
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <form method="post" action="/add">
+            <form method="post" action="/add" enctype='multipart/form-data'>
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="formModalLabel">Add Recipe</h4>
@@ -116,8 +116,9 @@
                         <textarea class="form-control" name="description"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Photo</label>
-                        <input type="text" class="form-control" name="photoUrl"/>
+                        <label for="photoUrl">Photo</label>
+                        <input type="file" id="photoUrl" name="photoUrl">
+                        <p class="help-block">Select photo from your disk.</p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -171,10 +172,6 @@
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="form-control" name="description" id="edit-description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Photo</label>
-                        <input type="text" class="form-control" name="photoUrl" id="edit-photoUrl"/>
                     </div>
                 </div>
                 <div class="modal-footer">
