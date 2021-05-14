@@ -1,9 +1,35 @@
 body {
     margin-top: 10px;
-    background: #f9f9f9;
+    background-color: #f8f9fa;
 }
 
 .img-thumbnail {
     height: 150px;
     width: 150px;
+}
+
+.well {
+    background-color: #E6E6FA;
+}
+
+.container-fluid {
+    background-color: #E6E6FA;
+}
+
+.label-default {
+    background-color: #8B008B;
+}
+
+.btn-primary {
+    background-color: #8B008B;
+    border-color: #8B008B;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    background-color: #C71585;
+    border-color: #C71585;
+}
+
+.navbar-brand {
+    color: #8B008B;
 }

@@ -13,7 +13,6 @@ var express = require('express'),
 
 // Db Config
 const pg = require('pg');
-const { time } = require('console');
 const pool = new pg.Pool({
         host: 'localhost',
         database: 'recipebook_db',
