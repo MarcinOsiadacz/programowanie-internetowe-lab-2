@@ -14,6 +14,11 @@
 
 ## Informacje ogólne
 
+### Technologie
+- NodeJS + Express + Dust
+- PostreSQL
+- Bootstrap
+
 ### Rejestracja
 ![AppScreenshot](./app_screenshots/Register.jpg)
 
